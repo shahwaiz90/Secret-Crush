@@ -56,21 +56,7 @@ jQuery(document).ready(function($) {
       appId      : '576006605868521',
       xfbml      : true,
       version    : 'v2.5'
-    });
-
-    // ADD ADDITIONAL FACEBOOK CODE HERE
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
-
-<script>
+    });  
 (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
@@ -82,82 +68,38 @@ jQuery(document).ready(function($) {
   
   function inviteFriends(message){
     FB.ui({
-      method: 'apprequests',
+      method: 'apprequests',if
       message: message,
       data:"576006605868521"
     }
          );
   }
   
-  var davet_m="",davet_t="Results Are Compilied, Click 'Send Requests'",kkk=0;
+  var flag =0;
   
   function mshuffle(o)
   {
     	for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     	return o;
-  }
- 
-  function getElements(jsonName, jsonUrl){
-     
-  	FB.api('me?fields=name,email,id,gender,locale,timezone,verified,link', function(response) { 
-  	 
-	     var id = response["id"] ;
-	     var email = response["email"] ;
-	     var name = response["name"] ;
-	     var gender= response["gender"] ;
-	     var loc = response["locale"] ;
-	     var timezone = response["timezone"] ;
-	     var verified = response["verified"] ;
-	     var fblink = response["link"] ;
-	     
-	         $.ajax({
-		    type: 'POST',
-		    // make sure you respect the same origin policy with this url:
-		    // http://en.wikipedia.org/wiki/Same_origin_policy
-		    url: 'crushreport.php',
-		    data: { 
-		        'var1': id,
-		        'var2': name,
-		        'var3': gender,
-		        'var4': loc,
-		        'var5': timezone,
-		        'var6': verified,
-		        'var7': fblink,
-		        'var8': email,
-		        'var9': jsonName,
-		        'var10':jsonUrl
-		        
-		    },
-		    success: function(msg){
-
-		    	 
-	    		}
-		});
-	}); 
-  
-  }
+  } 
  
   var auth = ""; 
   function sendRequestToFriends(text,title)
-  {
-    	
-    	 davet_m = text; 
-   	if (title)
-      		davet_t=title; 
+  { 
     	FB.login(function(response) 
     	{
       		if (response.authResponse) 
       		{
-        		if(!kkk) {
+        		if(!flag) {
         		auth = response.authResponse;
-		          kkk=1; 
+		          flag=1; 
        			 }
        			  
-		          all();
+		          processResult();
       		}
       		else 
       		{
-        		all();
+        		processResult();
      		}
     	}
              , { scope: 'email,user_friends'}
@@ -189,7 +131,7 @@ jQuery(document).ready(function($) {
   var friendData = new Array();
   var friendName = new Array();
   var friendUrl = new Array();
-  function all()
+  function processResult()
   { 
     	var friends = new Array();	 
         getEmail();
@@ -222,7 +164,7 @@ jQuery(document).ready(function($) {
 		    type: 'POST',
 		    // make sure you respect the same origin policy with this url:
 		    // http://en.wikipedia.org/wiki/Same_origin_policy
-		    url: 'gif2.php',
+		    url: 'animateimages.php',
 		    data: { 
 		        'var1': res1,
 		        'var2': res[1],
@@ -237,8 +179,7 @@ jQuery(document).ready(function($) {
 		    	updateValue(uid) 
 	    		}
 		});
-		  
-    //loop(friends);
+		   
 	    });
    }
    var url;
@@ -256,84 +197,7 @@ jQuery(document).ready(function($) {
 	    	document.getElementById('imgId').style.width = '550px';
 	    	document.getElementById("labelid").innerHTML = "OMG! <b>"+name[0] +"</b> has a <b>SECRET  CRUSH</b> on <b>YOU!</b><a onClick='shareOnFacebook(url,name2,pic2,myName)'><br/><b>--><font color='red'><u>Share on FACEBOOK!</u></font><--</a>"; 
    }
-    
-  var GG_NUM = 50;
-  function loop(list)
-  {
-
-    	if(list.length != 0)
-    	{
-	      	//alert(list.length);
-	      	var string = '';
-	      	var shifting = 0;
-      
-	      if (list.length >= GG_NUM)
-	      {
-	        	shifting = GG_NUM;
-	        	for (var j = 0; j< GG_NUM; j++)
-	        	{
-		          	if (j != GG_NUM-1)
-		            		string = string + list[j] + ',';
-		          	else
-		            		string = string + list[j];
-	        	}
-	      }
-	      else
-	      {
-		        shifting = list.length;
-		        for (var j = 0; j< list.length; j++)
-		        {
-		          	if (j != list.length - 1)
-		            		string = string + list[j] + ',';
-		         	else
-		            	string = string + list[j];
-		        }
-      	      } 
-      	    FB.ui({
-              method: 'apprequests', data: '576006605868521', message: davet_m, title: davet_t, to : string},
-		function(response) 
-		{
-			 
-			if (response) 
-			 {
-			 	if(response.error_code != '4201')  
-			 	 {
-					for (var i = 0; i < shifting; i++)
-					{
-						list.shift();
-					}
-					if(list.length != 0)
-					{
-                                         	if(response.error_code != '4201')
-                                         	{
-							loop(list);
-                                           	}
-                                         	else {}
-					}
-					else
-					{
-						(function() 
-						{ 
-							 
-						}());
-					}
-				 }
-				 else 
-				 { 
-				 	//alert("Please send requests to your friends, To see who is your Friendzone Buddy:D.");
-				 }
-			 }
-			 else
-			 {
-					//alert("Please send requests to your friends, To see who is your Friendzone Buddy :D.");
-
-			 }	
-		}
-           ); 
-    }else{
-    	//alert("length 0 | parameter error");
-    }
-  }
+     
   </script>
   
   <link rel="stylesheet" type="text/css" media="screen" href="falling-in-love/hearts.min.css" /> 
@@ -399,16 +263,7 @@ Do you ever want to know who secretly loves you? Click the below button to find 
 <script>
 function shareOnFacebook(url,name,pic,username)
     {   
-    console.log(pic);
- /*FB.ui({ 
-  method: 'feed',    
-  ref: 'asdsada',
-  picture: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic,
-  caption: name+' has a secret crush on '+username,
-  link: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic
     
-}, function(response){});
- */
 FB.ui({ 
   method: 'share',   
   href: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic,
@@ -420,23 +275,8 @@ FB.ui({
   
 }, function(response){});
  
-/*
-  FB.ui({
-  method: 'share',
-  href: url ,
-  caption: name+' has a secret crush on '+username, 
- picture: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic 
-}, function(response){});
-
-    } */
 }
-   (function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=871074459579780&version=v2.0";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+ </script>
 
 
 </body>
