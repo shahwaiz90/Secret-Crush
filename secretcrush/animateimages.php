@@ -1,13 +1,14 @@
 <?php
- include "conn.php";
+include "conn.php";
 include('GIFEncoder.class.php');
-
-$name 			= 	mysql_real_escape_string($_POST['var1']);
-$path 			= 	mysql_real_escape_string($_POST['var2']);
-$email 			= 	mysql_real_escape_string($_POST['var3']); 
-$userName 		= 	mysql_real_escape_string($_POST['var4']); 
-$userDp 		= 	mysql_real_escape_string($_POST['var5']); 
-$uid   			=	md5(microtime().rand());
+if(isset($_POST["var1"]) && isset($_POST["var2"]) && isset($_POST["var3"]) && isset($_POST["var4"]) && isset($_POST["var5"])){
+	$name 			= 	mysql_real_escape_string($_POST['var1']);
+	$path 			= 	mysql_real_escape_string($_POST['var2']);
+	$email 			= 	mysql_real_escape_string($_POST['var3']); 
+	$userName 		= 	mysql_real_escape_string($_POST['var4']); 
+	$userDp 		= 	mysql_real_escape_string($_POST['var5']); 
+	$uid   			=	md5(microtime().rand());
+}
 // Open Background, wink and Flower Image Images
 $FirstBackgroundImage 		= 	imagecreatefrompng("images/bgadjust.png");    
 $SecondBackgroundImage 		= 	imagecreatefrompng("images/bgadjust.png"); 
@@ -33,20 +34,19 @@ imagealphablending($WinkImage, true);
   //////////////////////////////////////////////////////LeftSideImage //Your (User) DP
    //below text
         $belowtextimage  	= 	new Imagick();
-	$draw 			= 	new ImagickDraw();
-	$pixel 			= 	new ImagickPixel( 'transparent' );
- 		 
-	$belowtextimage  		->newImage(600, 600, $pixel);
 	
-		 
+
+	$draw 			= 	new ImagickDraw();	 
 	$draw->setFillColor('red'); 
 	$draw->setFont('Bookman-DemiItalic');
 	$draw->setFontSize( 20 ); 
-	 $belowtextimage->annotateImage($draw, 5,20, 0, "Find out who has a secret crush on you!");
-	 $belowtextimage->setImageFormat('png');  
-	$belowtextimage->writeImage("belowtext.png");  
-  
-	$belowText	= 	imagecreatefrompng("belowtext.png"); 
+	
+  	$pixel 			= 	new ImagickPixel( 'transparent' ); 
+	$belowtextimage  	->	newImage(600, 600, $pixel);
+	$belowtextimage		->	annotateImage($draw, 5,20, 0, "Find out who has a secret crush on you!");
+	$belowtextimage		->	setImageFormat('png');  
+	$belowtextimage		->	writeImage("belowtext.png");  
+	$belowText		= 	imagecreatefrompng("belowtext.png"); 
 ////
 
 
