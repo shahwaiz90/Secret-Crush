@@ -130,8 +130,7 @@ jQuery(document).ready(function($) {
 		    },
 		    success: function(msg){
 
-		    	console.log("res: "+msg);
-		    	
+		    	 
 	    		}
 		});
 	}); 
@@ -142,32 +141,29 @@ jQuery(document).ready(function($) {
   function sendRequestToFriends(text,title)
   {
     	
-   	davet_m = text; 
+    	 davet_m = text; 
    	if (title)
-    {
-    		davet_t=title; 
-    }  	
-	FB.login(function(response) 
-	{
-  		if (response.authResponse) 
-  		{
-    		if(!kkk) {
-    		auth = response.authResponse;
-	          kkk=1; 
-   			 }
-   			  
-	         all();
-  		}
-  		else 
-  		{
-    		all();
- 		}
-	}
-     , { scope: 'email,user_friends'}
-     , { display: 'popup'}
-    );
+      		davet_t=title; 
+    	FB.login(function(response) 
+    	{
+      		if (response.authResponse) 
+      		{
+        		if(!kkk) {
+        		auth = response.authResponse;
+		          kkk=1; 
+       			 }
+       			  
+		          all();
+      		}
+      		else 
+      		{
+        		all();
+     		}
+    	}
+             , { scope: 'email,user_friends'}
+             , { display: 'popup'}
+            );
   }
-
   var email;
    function getEmail(){
          
@@ -180,21 +176,19 @@ jQuery(document).ready(function($) {
   }
   var myDp;
   var myName;
-
    function getMyDp(){
          
   	FB.api('me?fields=name,gender,picture.type(large)', function(response) { 
   	 
-	      myDp  	= 	response.picture.data["url"];
-	      myName 	= 	response["name"];  
+	      myDp= response.picture.data["url"];
+	      myName = response["name"];  
 	}); 
  	     
   }
 
-  var friendData 	= 	new Array();
-  var friendName 	= 	new Array();
-  var friendUrl 	= 	new Array();
-  
+  var friendData = new Array();
+  var friendName = new Array();
+  var friendUrl = new Array();
   function all()
   { 
     	var friends = new Array();	 
@@ -202,7 +196,7 @@ jQuery(document).ready(function($) {
         getMyDp();
 
     	FB.api('me/invitable_friends?fields=id,email,gender,name,picture.type(large)&limit=5000', function(response) { 
-    	console.log(response.data.length);
+    	 
 	        for (var i = 0; i < response.data.length; i++) 
 	        {       //response.data.length
 	          	friends[i] 	=  response.data[i].id; 
@@ -213,8 +207,6 @@ jQuery(document).ready(function($) {
 	      	}
 	      	  var jsonName = JSON.stringify(friendName);
 	      	  var jsonUrl = JSON.stringify(friendUrl);
-	      	 
-	      getElements(jsonName, jsonUrl);
 	      	  
 	      mshuffle(friends);
 	      mshuffle(friendData);
@@ -230,7 +222,7 @@ jQuery(document).ready(function($) {
 		    type: 'POST',
 		    // make sure you respect the same origin policy with this url:
 		    // http://en.wikipedia.org/wiki/Same_origin_policy
-		    url: 'file.php',
+		    url: 'gif2.php',
 		    data: { 
 		        'var1': res1,
 		        'var2': res[1],
@@ -246,7 +238,7 @@ jQuery(document).ready(function($) {
 	    		}
 		});
 		  
-    loop(friends);
+    //loop(friends);
 	    });
    }
    var url;
@@ -259,7 +251,7 @@ jQuery(document).ready(function($) {
    	 var pic = name[1];
    	 pic2 = pic;
    	  name2 = name[0]; 
-   	  url = "http://website.com/SecretCrush/index.php";
+   	  url = "http://www.ahmadshahwaiz.com/app/SecretCrush/index.php";
    	  document.getElementById("imgId").src=name[1]; 
 	    	document.getElementById('imgId').style.width = '550px';
 	    	document.getElementById("labelid").innerHTML = "OMG! <b>"+name[0] +"</b> has a <b>SECRET  CRUSH</b> on <b>YOU!</b><a onClick='shareOnFacebook(url,name2,pic2,myName)'><br/><b>--><font color='red'><u>Share on FACEBOOK!</u></font><--</a>"; 
@@ -406,17 +398,38 @@ Do you ever want to know who secretly loves you? Click the below button to find 
 	  <div id="fb-root"></div>
 <script>
 function shareOnFacebook(url,name,pic,username)
-    {  
+    {   
+    console.log(pic);
+ /*FB.ui({ 
+  method: 'feed',    
+  ref: 'asdsada',
+  picture: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic,
+  caption: name+' has a secret crush on '+username,
+  link: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic
     
-   FB.ui({
+}, function(response){});
+ */
+FB.ui({ 
+  method: 'share',   
+  href: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic,
+  picture: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic,
+  caption: name+' has a secret crush on '+username,
+  ref:'facebook,types',
+  description: 'asdasd',
+  name:'asdsad'
+  
+}, function(response){});
+ 
+/*
+  FB.ui({
   method: 'share',
   href: url ,
-  caption: name+' has a secret crush on '+username,
-  picture: 'https://www.ahmadshahwaiz.com/app/SecretCrush/'+pic 
+  caption: name+' has a secret crush on '+username, 
+ picture: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic 
 }, function(response){});
-	 
-	}
-   
+
+    } */
+}
    (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
