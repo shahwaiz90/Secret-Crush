@@ -402,7 +402,7 @@ function shareOnFacebook(url,name,pic,username)
     console.log(pic);
  /*FB.ui({ 
   method: 'feed',    
-  ref: 'asdsada',
+  ref: 'asdsada',"heroku/heroku-buildpack-php": "*"
   picture: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic,
   caption: name+' has a secret crush on '+username,
   link: 'http://www.ahmadshahwaiz.com/app/SecretCrush/'+pic
