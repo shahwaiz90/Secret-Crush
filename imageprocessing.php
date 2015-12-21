@@ -11,22 +11,35 @@ class ImageProcessing{
 	public $userName;
 	public $userDp;
 	public $uid;
+	public $FirstBackgroundImage;
+	public $SecondBackgroundImage;
+	public $FlowerImage;
+	public $SmileImage;
+	public $WinkImage;
+	public $aboveText;
+	public $belowText;
 	
-	// Open Background, wink and Flower Image Images. Hardcode images//////////////////////
-	function OpenBackgroundImages(){
-		$FirstBackgroundImage 		= 	imagecreatefrompng("images/bgadjust.png");    
-		$SecondBackgroundImage 		= 	imagecreatefrompng("images/bgadjust.png"); 
-		$FlowerImage 			= 	imagecreatefrompng("images/sendflower.png"); 
-		$SmileImage 			= 	imagecreatefrompng("images/smile.png");
-		$WinkImage 			= 	imagecreatefrompng("images/wink.png");
-	}
-	////////////////Giving Alpha Blend to Above Images//////////////////////////////////////
-	function GiveAlphaBlend(){
-		imagesavealpha($FirstBackgroundImage, true);
-		imagealphablending($SecondBackgroundImage, true);
-		imagealphablending($FlowerImage, true);
-		imagealphablending($SmileImage, true);
-		imagealphablending($WinkImage, true);
+	function __construct($name, $path, $email, $userName, $userDp, $uid) {
+	        $this->$userName 			= 	$userName;
+		$this->$name 	 			= 	$name;
+		$this->$path 	 			= 	$path;
+		$this->$email 	 			= 	$email;
+		$this->$userDp 	 			= 	$userDp;
+		$this->$uid 	 			= 	$uid;
+			// Open Background, wink and Flower Image Images. Hardcode images//////////////////////
+		$this->$FirstBackgroundImage 		= 	imagecreatefrompng("images/bgadjust.png");    
+		$this->$SecondBackgroundImage 		= 	imagecreatefrompng("images/bgadjust.png"); 
+		$this->$FlowerImage 			= 	imagecreatefrompng("images/sendflower.png"); 
+		$this->$SmileImage 			= 	imagecreatefrompng("images/smile.png");
+		$this->$WinkImage 			= 	imagecreatefrompng("images/wink.png");
+   	}
+		////////////////Giving Alpha Blend to Above Images//////////////////////////////////////
+	function GiveAlphaBlending(){ 
+	 	imagesavealpha($this->$FirstBackgroundImage, true);
+		imagealphablending($this->$SecondBackgroundImage, true);
+		imagealphablending($this->$FlowerImage, true);
+		imagealphablending($this->$SmileImage, true);
+		imagealphablending($this->$WinkImage, true);
 	}
   /////////////////LeftSideImage Friend DP	///////////////////////////////////////////////////
   function LeftSideImage(){
@@ -54,7 +67,7 @@ class ImageProcessing{
 		$belowtextimage		->	setImageFormat('png');  
 		$belowtextimage		->	writeImage("belowtext.png");  
 	  
-		$belowText			= 	imagecreatefrompng("belowtext.png"); 
+		$this->$belowText			= 	imagecreatefrompng("belowtext.png"); 
 	 }
  	//////////////////////Above text//////////////////////////////////////////////////////////////////
  
@@ -68,18 +81,18 @@ class ImageProcessing{
 	 		$draw 				->		setFont('Bookman-DemiItalic');
 			$draw 				->		setFontSize( 20 );
 			
-			$myfirstName 		= 		explode(" ", $userName);
+			$myfirstName 		= 		explode(" ", $this->$userName);
 			$fname 				= 		$myfirstName[0];
 			
-			$abovetextimage		->		annotateImage($draw, 5,20, 0, "$name has a secret crush on $fname");
+			$abovetextimage		->		annotateImage($draw, 5,20, 0, "$this->$name has a secret crush on $fname");
 			$abovetextimage		->		setImageFormat('png');  
 			$abovetextimage		->		writeImage("abovetext.png");  
 		  
-			$aboveText			= 		imagecreatefrompng("abovetext.png");
+			$this->$aboveText			= 		imagecreatefrompng("abovetext.png");
  	}	
  	 //////////////////////Right Side Image (User DP- Your Dp)//////////////////////////////////////////////////
 	 function RightSideImage(){
-		  $RightSideImage		= 	new Imagick($userDp);
+		  $RightSideImage		= 	new Imagick($this->$userDp);
 		  $RightSideImage 		->	setImageFormat("png");  
 		  $RightSideImage  		->	roundCorners(20,20);
 		  $RightSideImage 		->	resizeImage(160,200,Imagick::FILTER_LANCZOS,1);
@@ -91,21 +104,21 @@ class ImageProcessing{
 	  ///////////////////Merging Images to Backgrounds///////////////////////////////////////////////////////////
 	  
 	 function MergingImages(){
-		imagecopy($FirstBackgroundImage, $belowText, 50,240, 0, 0, 500, 200);
-		imagecopy($SecondBackgroundImage, $belowText, 50,240, 0, 0, 500, 200);   
-		imagecopy($SecondBackgroundImage, $CreateLeftSideImage, 20,30, 0, 0, 160, 200); //Left side photo frame
+		imagecopy($this->$FirstBackgroundImage, $this->$belowText, 50,240, 0, 0, 500, 200);
+		imagecopy($this->$SecondBackgroundImage, $this->$belowText, 50,240, 0, 0, 500, 200);   
+		imagecopy($this->$SecondBackgroundImage, $this->$CreateLeftSideImage, 20,30, 0, 0, 160, 200); //Left side photo frame
 	
-		imagecopy($FirstBackgroundImage, $CreateRightSideImage, 370,30, 0, 0, 160, 200); //Right side photo frame 
-		imagecopy($SecondBackgroundImage, $CreateRightSideImage, 370,30, 0, 0, 160, 200); //Right side photo frame 
+		imagecopy($this->$FirstBackgroundImage, $this->$CreateRightSideImage, 370,30, 0, 0, 160, 200); //Right side photo frame 
+		imagecopy($this->$SecondBackgroundImage, $this->$CreateRightSideImage, 370,30, 0, 0, 160, 200); //Right side photo frame 
 	
-		imagecopy($FirstBackgroundImage, $CreateLeftSideImage, 20,30, 0, 0, 160, 200); //Leftside photo frame
-		imagecopy($FirstBackgroundImage, $aboveText, 50,0, 0, 0, 500, 200); //Text Above
-		imagecopy($FirstBackgroundImage, $FlowerImage, 200,100, 0, 0, 100, 80); //Flower Image Left
-		imagecopy($FirstBackgroundImage, $SmileImage, 160,30, 0, 0, 100, 100); //Smile Image  
-		imagecopy($SecondBackgroundImage, $WinkImage, 160,30, 0, 0, 100, 100); //Wink Image  
-		imagecopy($SecondBackgroundImage, $FlowerImage, 280,100, 0, 0, 100, 80); //Flower Image Move Right
+		imagecopy($this->$FirstBackgroundImage, $this->$CreateLeftSideImage, 20,30, 0, 0, 160, 200); //Leftside photo frame
+		imagecopy($this->$FirstBackgroundImage, $this->$aboveText, 50,0, 0, 0, 500, 200); //Text Above
+		imagecopy($this->$FirstBackgroundImage, $this->$FlowerImage, 200,100, 0, 0, 100, 80); //Flower Image Left
+		imagecopy($this->$FirstBackgroundImage, $this->$SmileImage, 160,30, 0, 0, 100, 100); //Smile Image  
+		imagecopy($this->$SecondBackgroundImage, $this->$WinkImage, 160,30, 0, 0, 100, 100); //Wink Image  
+		imagecopy($this->$SecondBackgroundImage, $this->$FlowerImage, 280,100, 0, 0, 100, 80); //Flower Image Move Right
 	
-		imagecopy($SecondBackgroundImage, $aboveText, 50,0, 0, 0, 500, 200);
+		imagecopy($this->$SecondBackgroundImage, $this->$aboveText, 50,0, 0, 0, 500, 200);
 	 }
 	
 	///////////////Generate GIF from the $image///////////////////////////////////////////////////////////////////
@@ -113,7 +126,7 @@ class ImageProcessing{
 		// We want to put the binary GIF data into an array to be used later,
 		//  so we use the output buffer.
 		ob_start();
-		imagegif($FirstBackgroundImage);
+		imagegif($this->$FirstBackgroundImage);
 		$frames[]		=		ob_get_contents();
 		$framed[]		=		80; // Delay in the animation.
 		ob_end_clean();
@@ -123,8 +136,8 @@ class ImageProcessing{
 		// We want to put the binary GIF data into an array to be used later,
 		//  so we use the output buffer.
 		ob_start();
-		$merged_image 	= 	"dps/$uid.gif";
-		imagegif($SecondBackgroundImage);
+		$merged_image 	= 	"dps/$this->$uid.gif";
+		imagegif($this->$SecondBackgroundImage);
 	
 		$frames[]		=		ob_get_contents();
 		$framed[]		=		80; // Delay in the animation.
@@ -162,7 +175,8 @@ if(isset($_POST["var1"]) && isset($_POST["var2"]) && isset($_POST["var3"]) && is
 	$userDp 				= 	mysql_real_escape_string($_POST['var5']); 
 	$uid   					=	md5(microtime().rand());
 	
-	$ImageProcessing 	= 	new imageprocessing;
+	$ImageProcessing 	= 	new imageprocessing($name, $path, $email, $userName, $userDp, $uid); 
+	$imageProcessing	->	GiveAlphaBlending();
 	$imageProcessing	->	BelowText();
 	$imageProcessing	->	AboveText();
 	$imageProcessing	->	RightSideImage();
